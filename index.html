@@ -16,7 +16,7 @@
         }
         .chart-container {margin: 1vw;}
 		    .link {stroke-width: 4px;}
-        h1, h2, hr, p {text-align: center; margin-left: 2vw; margin-right: 2vw;}	
+        h1, h2, hr, p {text-align: center; margin-left: 2vw; margin-right: 2vw;}
     </style>
 </head>
 <body>
@@ -34,7 +34,7 @@
 <!-- Container for organizational chart -->
 <div class="chart-container"></div>
 
-<script>
+  <script>
     let chart;
     let nameSuggestions = [];
 
@@ -53,38 +53,71 @@
             chart.setUpToTheRootHighlighted(matchedNode.id).render().fit();
         }
     }
+    function expandNode(nodeId) {
+        chart.setExpanded(nodeId).setCentered(nodeId).render();}
 
     // Load data from CSV
     d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=412639955&single=true&output=csv')
         .then((data) => {
             chart = new d3.OrgChart()
-                .nodeHeight((d) => 85 + 25)
-                .nodeWidth((d) => 220 + 2)
-                .childrenMargin((d) => 50)
-                .compactMarginBetween((d) => 35)
-                .compactMarginPair((d) => 30)
-                .neighbourMargin((a, b) => 20)
+                .nodeHeight((d) => 110)
+                .nodeWidth((d) => {
+                    const linesOccupied = d.data.Officer.length + d.data.Office_name.length + d.data.Location.length;
+                    const baseHeight = 100; 
+                    const lineHeight = 2.4; 
+                    return baseHeight + linesOccupied * lineHeight;})
+                .childrenMargin((d) => 60)
+                .layout('left')
+                .compact(false)
                 .nodeContent(function (d, i, arr, state) {
-                    const color = '#FFFFFF';
+                  let color = '#008080'; 
+                    switch (d.data.Officer_rank) {
+                        case '1':
+                            color = '#47a6ff'; 
+                            break;
+                        case '2':
+                            color = '#69b9ff'; // Change color based on the 'rank' value
+                            break;
+                        case '3':
+                            color = '#88c8ff'; // Change color based on the 'rank' value
+                            break;
+                        case '4':
+                            color = '#9cd4ff'; // Change color based on the 'rank' value
+                            break;
+                        case '5':
+                            color = '#b5e1ff'; // Change color based on the 'rank' value
+                            break;
+                        case '6':
+                            color = '#dff0ff'; // Change color based on the 'rank' value
+                            break;
+                        default:
+                            color = '#008080'; // Default color
+                    }
                     return `
-                        <div style='width:${d.width}px;height:1px;padding-top:1px;padding-left:1px;padding-right:1px'>
-                            <div style="font-family: 'Inter', sans-serif;background-color:${color};  margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:10px;border: 1px solid #E4E2E9">
-                                <div style="display:flex;justify-content:flex-end;margin-top:5px;margin-right:8px">#${d.data.id}</div>
-                                <div style="font-size:15px;color:#08011E;margin-left:20px;margin-top:10px">${d.data.Officer}</div>
-                                <div style="color:#716E7B;margin-left:20px;margin-top:3px;font-size:10px;">${d.data.Office_name}</div>
-                                <div style="color:#716E7B;margin-left:20px;margin-top:3px;font-size:10px;">${d.data.Location}</div>
+                    <div style='width:${d.width}px;height:${d.height}px;padding-top:1px;padding-left:1px;padding-right:1px'>
+                            <div style="font-family: 'Inter', sans-serif;background-color:${color};  margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:4px;border: 2px solid #E4E2E9">
+                                <div style="font-size:16px;color:#33334d;margin-left:20px;margin-right:10px;margin-top:10px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Officer} </div>
+                                <hr style="border: 1px solid #52527a; margin-left: 14px; margin-right: 14px;">
+                                <div style="color:#666699;margin-left:20px;margin-right:10px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Office_name}, </div>
+                                <div style="color:#666699;margin-left:20px;margin-right:10px;margin-top:3px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Location}. </div>
                             </div>
-                        </div>`;
+                        </div>
+                      `;
                 })
                 .container('.chart-container')
                 .data(data)
+                .onNodeClick((d) => {
+        			  // Clear previous highlighting
+        			  chart.clearHighlighting().collapseAll();
+        			  // Highlight the clicked node
+        			  chart.setUpToTheRootHighlighted(d.data.id).render().fit();
+      			    })
                 .render();
 
             // Populate nameSuggestions array
             data.forEach((item) => {
                 nameSuggestions.push(item.Address);
             });
-
             // Populate suggestions in datalist
             const dataList = document.getElementById('suggestions');
             data.forEach((item) => {
@@ -92,10 +125,12 @@
                 option.value = item.Address;
                 dataList.appendChild(option);
             });
-
             // Bind event listener to input for filtering chart
             document.getElementById('searchInput').addEventListener('input', filterChart);
+
+            // Automatically expand and center the node with ID '56'
+            expandNode('56');
         });
-</script>
+  </script>
 </body>
 </html>
