@@ -54,7 +54,7 @@
         }
     }
     function expandNode(nodeId) {
-        chart.setExpanded(nodeId).setCentered(nodeId).render();}
+        chart.setUpToTheRootHighlighted(nodeId).render().fit();}
 
     // Load data from CSV
     d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=412639955&single=true&output=csv')
