@@ -42,8 +42,8 @@
         // Get input value
         const value = document.querySelector('input[type="search"]').value.trim().toLowerCase();
 
-        // Clear previous highlighting
-        chart.clearHighlighting();
+        // Clear previous highlighting and collapse
+        chart.clearHighlighting().collapseAll();
 
         // Filter data to find exact match
         const matchedNode = chart.data().find((d) => d.Address.toLowerCase() === value);
