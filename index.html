@@ -41,42 +41,26 @@
             }
         }
         /* Added CSS for modal */
-#modal-container {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(164, 183, 198, 0.6);
-    opacity: 0; /* Start with opacity set to 0 */
-    transition: opacity 0.3s ease; /* Add a transition for opacity property */
-}
-
-#modal-container.active {
-    display: flex; /* Change display to flex when active */
-    justify-content: center;
-    align-items: center;
-    opacity: 1; /* Set opacity to 1 when active */
-}
-
-#modal-content {
-    background-color: lightgrey;
-    margin: min(28vw, 160px) auto;
-    padding: 20px;
-    border: 1px solid grey;
-    width: min(80vw, 820px);
-    box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-    opacity: 0; /* Start with opacity set to 0 */
-    transition: opacity 0.3s ease; /* Add a transition for opacity property */
-}
-
-#modal-content.active {
-    opacity: 1; /* Set opacity to 1 when active */
-}
+        #modal-container {
+            display: ;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(164,183,198, 0.6)
+        }
+        #modal-content {
+            background-color: lightgrey;
+            margin: min(28vw,160px) auto;
+            padding: 20px;
+            border: 1px solid grey;
+            width: min(80vw,820px);
+            box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body style="display: block; background-image: url('https://raw.githubusercontent.com/kirupakaran-k/test2/main/resource/Aliyar.jpg'); background-position: 55% top; background-repeat: no-repeat; background-size: cover; backdrop-filter: grayscale(100%) brightness(120%); position: relative; height: 100vh;">
