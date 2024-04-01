@@ -10,139 +10,209 @@
     <script src="https://cdn.jsdelivr.net/npm/d3-org-chart@3.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js"></script>
     <style>
-    	.html, body {height: 90vh;
-                    overflow:hidden ;
-                    margin: 0;}
-        .chart-container {height: 100; margin: 10px; }
-		    .link {stroke-width: 4px;}
-        h1, h2, hr, p {text-align: center; margin-left: 2vw; margin-right: 2vw;}
+        .html, body {
+            height: 90vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        .chart-container {
+            height: 100;
+            margin: 10px;
+        }
+        .link {
+            stroke-width: 4px;
+        }
+        h1, h2, hr, p {
+            text-align: center;
+            margin-left: 2vw;
+            margin-right: 2vw;
+        }
         .navbar {
-        overflow: hidden;
-        background-color: rgba(255, 255, 255, 0.8);
-        position: fixed;
-        bottom: 0px;
-        width: 100%;
-        height: 6%;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.8);
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 64px;
+        }
+        @media only screen and (max-aspect-ratio: 6/10) {
+            .navbar {
+                height: 110px;
+            }
+        }
+        /* Added CSS for modal */
+        #modal-container {
+            display: ;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(164,183,198, 0.6)
+        }
+        #modal-content {
+            background-color: lightgrey;
+            margin: min(28vw,160px) auto;
+            padding: 20px;
+            border: 1px solid grey;
+            width: min(80vw,820px);
+            box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
     </style>
 </head>
-<body style="display: block; background-image: url('https://raw.githubusercontent.com/kirupakaran-k/test2/main/resource/Aliyar.jpg'); background-position: 55% top; background-repeat: no-repeat; background-size: cover; position: relative; height: 100vh; backdrop-filter: grayscale(100%);">   
+<body style="display: block; background-image: url('https://raw.githubusercontent.com/kirupakaran-k/test2/main/resource/Aliyar.jpg'); background-position: 55% top; background-repeat: no-repeat; background-size: cover; backdrop-filter: grayscale(100%) brightness(120%); position: relative; height: 100vh;">
     <div class="navbar">
-    <p style="font-size: clamp(12px, 1.4vw, 14px); position: absolute;"><i> [Disclaimer: Not an official website of the department.]</i></p>
-
-  </div>
+    <p style="font-size: clamp(12px, 1.4vw, 14px); color: blue; text-align: left; margin-top: clamp(4px, 0.7vw, 7px); cursor: pointer;" onclick="openModal()" onmouseover="this.style.color='red'" onmouseout="this.style.color='blue'"><i>Click here for how to use</i></p>
+    <p style="font-size: clamp(12px, 1.4vw, 14px);text-align: left;margin-top: clamp(-14px, -1.4vw, -12px)"><i>[Disclaimer: Not an official website of the department.]</i></p>
+    </div>
     <!-- Heading -->
-    <h1 style= "font-size: clamp(18px, 3.6vw, 28px);">ORGANOGRAM - TAMILNADU WATER RESOURCES DEPARTMENT</h1>
+    <h1 style="font-size: clamp(18px, 3.6vw, 28px);">TAMILNADU WATER RESOURCES DEPARTMENT - ORGANOGRAM</h1>
     <hr style="border: 1px solid #a3a3c2; margin-top: -1vh; margin-bottom: max(-10px, -2vh);">
-    <p style= "font-size: clamp(12px, 1.4vw, 14px);"><i><b> Engineered by Er.K.K for TNWRD Engineers</b></i></p>
-    
+    <p style="font-size: clamp(12px, 1.4vw, 14px);"><i><b> Engineered by Er.K.K for TNWRD Engineers</b></i></p>
     <hr style="border: 1px solid #a3a3c2; margin-top: max(-10px, -2vh); margin-bottom: -1vh;">
-    <h2 style= "font-size: clamp(16px, 3vw, 24px);">COIMBATORE REGION</h2>
+    <h2 style="font-size: clamp(16px, 3vw, 24px);">COIMBATORE REGION</h2>
+    <!-- Input for searching -->
+    <input type="search" id="searchInput" list="suggestions" placeholder="Enter here to search" style="display: block; margin: 0 auto;text-align: center;width: 50vw;"/>
+    <datalist id="suggestions"></datalist>
+    <!-- Container for organizational chart -->
+    <div class="chart-container"></div>
+    <!-- Modal container -->
+    <div id="modal-container" onclick="closeModal()">
+    <div id="modal-content" style="position: relative;">
+    <!-- Close button -->
+        <div style="position: absolute; top: -10px; right: -10px;">
+            <div style="width: 20px; height: 20px; border: 1px solid red; border-radius: 20%; background-color: white; display: flex; justify-content: center; align-items: center; cursor: pointer;" onclick="closeModal()">
+            <span style="font-size: 14px; color: red">x</span>
+            </div>
+        </div>
+    <!-- Your content goes here -->
+    <h3 style="margin-top: -10px; font-size: clamp(16px, 3vw, 24px)"><b>Kindly note:</b></h3>
+    <p style="text-align: left; margin-top: -10px; margin-bottom: -10px; font-size: clamp(12px, 1.4vw, 14px);"> * <span style="font-weight: bold;"> Click to Highlight: </span> Select any position to illuminate all superior offices in the chain of command.</p>
+    <p style="text-align: left; margin-bottom: -10px; font-size: clamp(12px, 1.4vw, 14px);">* <span style="font-weight: bold;"> Search Functionality: </span> Use the search bar to find and highlight specific positions and its chain of command.</p>
+    <p style="text-align: left; margin-bottom: -10px; font-size: clamp(12px, 1.4vw, 14px);">* <span style="font-weight: bold;"> Expand Subordinates: </span> Utilize the arrow symbol on the right side of the posting box to reveal subordinate offices.</p>
+    <p style="text-align: left; font-size: clamp(12px, 1.4vw, 14px);">* <span style="font-weight: bold;"> Effortless Navigation: </span> Simply drag and zoom to explore the org chart intuitively.</p>
+    <hr style="border: 1px dashed red; margin-bottom: -10px;">
+    <p style="color:red; font-size: clamp(12px, 1.4vw, 14px); margin-bottom: -10px;">* * DISCLAIMER * *</p>
+    <p style="color:#c00; font-size: clamp(12px, 1.4vw, 14px);">*This website is not affiliated with TNWRD. Efforts are made to include data from all regions and wings of the department and to improve data accuracy, but users advised to verify information independently. We do not accept responsibility for any loss or inconvenience due to reliance on this information.*</p>
+    <hr style="border: 1px dashed red; margin-top: -10px; margin-bottom: -10px;">
+    <p style="margin-bottom: -10px; font-size: clamp(14px, 2.2vw, 20px)"><b><i>An engineering by Er.K.K.</i></b></p>
+    <p style="margin-bottom: -10px; font-size: clamp(12px, 1.4vw, 14px"><b><i>- (Er. Kirupakaran K, AE-TNWRD, 2K20 Batch).</i></b></p>
+    </div>
+    </div>
 
-<!-- Input for searching -->
-<input type="search" id="searchInput" list="suggestions" placeholder="Enter herer to search" style="display: block; margin: 0 auto;text-align: center;width: 50vw;"/>
-<datalist id="suggestions"></datalist>
+    <script>
+        let chart;
+        let nameSuggestions = [];
 
-<!-- Container for organizational chart -->
-<div class="chart-container"></div>
+        function filterChart() {
+            // Get input value
+            const value = document.querySelector('input[type="search"]').value.trim().toLowerCase();
 
-  <script>
-    let chart;
-    let nameSuggestions = [];
+            // Clear previous highlighting and collapse
+            chart.clearHighlighting().collapseAll();
 
-    function filterChart() {
-        // Get input value
-        const value = document.querySelector('input[type="search"]').value.trim().toLowerCase();
+            // Filter data to find exact match
+            const matchedNode = chart.data().find((d) => d.Address.toLowerCase() === value);
 
-        // Clear previous highlighting and collapse
-        chart.clearHighlighting().collapseAll();
-
-        // Filter data to find exact match
-        const matchedNode = chart.data().find((d) => d.Address.toLowerCase() === value);
-
-        // If a match is found, highlight it, render, and fit the chart
-        if (matchedNode) {
-            chart.setUpToTheRootHighlighted(matchedNode.id).render().fit();
+            // If a match is found, highlight it, render, and fit the chart
+            if (matchedNode) {
+                chart.setUpToTheRootHighlighted(matchedNode.id).render().fit();
+            }
         }
-    }
-    function expandNode(nodeId) {
-        chart.setUpToTheRootHighlighted(nodeId).render().fit();}
 
-    // Load data from CSV
-    d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=412639955&single=true&output=csv')
-        .then((data) => {
-            chart = new d3.OrgChart()
-                .nodeHeight((d) => 110)
-                .nodeWidth((d) => {
-                    const linesOccupied = d.data.Officer.length + d.data.Office_name.length + d.data.Location.length;
-                    const baseHeight = 100; 
-                    const lineHeight = 2.4; 
-                    return baseHeight + linesOccupied * lineHeight;})
-                .childrenMargin((d) => 60)
-                .layout('left')
-                .compact(false)
-                .nodeContent(function (d, i, arr, state) {
-                  let color = '#008080'; 
-                    switch (d.data.Officer_rank) {
-                        case '1':
-                            color = '#47a6ff'; 
-                            break;
-                        case '2':
-                            color = '#69b9ff'; // Change color based on the 'rank' value
-                            break;
-                        case '3':
-                            color = '#88c8ff'; // Change color based on the 'rank' value
-                            break;
-                        case '4':
-                            color = '#9cd4ff'; // Change color based on the 'rank' value
-                            break;
-                        case '5':
-                            color = '#b5e1ff'; // Change color based on the 'rank' value
-                            break;
-                        case '6':
-                            color = '#dff0ff'; // Change color based on the 'rank' value
-                            break;
-                        default:
-                            color = '#008080'; // Default color
-                    }
-                    return `
-                    <div style='width:${d.width}px;height:${d.height}px;padding-top:1px;padding-left:1px;padding-right:1px'>
-                            <div style="font-family: 'Inter', sans-serif;background-color:${color};  margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:4px;border: 2px solid #E4E2E9">
-                                <div style="font-size:16px;color:#33334d;margin-left:20px;margin-right:10px;margin-top:10px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Officer} </div>
-                                <hr style="border: 1px solid #52527a; margin-left: 14px; margin-right: 14px;">
-                                <div style="color:#666699;margin-left:20px;margin-right:10px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Office_name}, </div>
-                                <div style="color:#666699;margin-left:20px;margin-right:10px;margin-top:3px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Location}. </div>
+        function expandNode(nodeId) {
+            chart.setUpToTheRootHighlighted(nodeId).render().fit();
+        }
+
+        // Function to open modal
+        function openModal() {
+            document.getElementById("modal-container").style.display = "block";
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById("modal-container").style.display = "none";
+        }
+
+        // Load data from CSV
+        d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=412639955&single=true&output=csv')
+            .then((data) => {
+                chart = new d3.OrgChart()
+                    .nodeHeight((d) => 110)
+                    .nodeWidth((d) => {
+                        const linesOccupied = d.data.Officer.length + d.data.Office_name.length + d.data.Location.length;
+                        const baseHeight = 100;
+                        const lineHeight = 2.4;
+                        return baseHeight + linesOccupied * lineHeight;
+                    })
+                    .childrenMargin((d) => 60)
+                    .layout('left')
+                    .compact(false)
+                    .nodeContent(function (d, i, arr, state) {
+                        let color = '#008080';
+                        switch (d.data.Officer_rank) {
+                            case '1':
+                                color = '#47a6ff';
+                                break;
+                            case '2':
+                                color = '#69b9ff';
+                                break;
+                            case '3':
+                                color = '#88c8ff';
+                                break;
+                            case '4':
+                                color = '#9cd4ff';
+                                break;
+                            case '5':
+                                color = '#b5e1ff';
+                                break;
+                            case '6':
+                                color = '#dff0ff';
+                                break;
+                            default:
+                                color = '#008080';
+                        }
+                        return `
+                            <div style='width:${d.width}px;height:${d.height}px;padding-top:1px;padding-left:1px;padding-right:1px'>
+                                <div style="font-family: 'Inter', sans-serif;background-color:${color};  margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:4px;border: 2px solid #E4E2E9">
+                                    <div style="font-size:16px;color:#33334d;margin-left:20px;margin-right:10px;margin-top:10px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Officer} </div>
+                                    <hr style="border: 1px solid #52527a; margin-left: 14px; margin-right: 14px;">
+                                    <div style="color:#666699;margin-left:20px;margin-right:10px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Office_name}, </div>
+                                    <div style="color:#666699;margin-left:20px;margin-right:10px;margin-top:3px;font-size:14px; text-shadow: 0 0 4px #ffffff;"> ${d.data.Location}. </div>
+                                </div>
                             </div>
-                        </div>
-                      `;
-                })
-                .container('.chart-container')
-                .data(data)
-                .onNodeClick((d) => {
-        			  // Clear previous highlighting
-        			  chart.clearHighlighting().collapseAll();
-        			  // Highlight the clicked node
-        			  chart.setUpToTheRootHighlighted(d.data.id).render().fit();
-      			    })
-                .render();
+                        `;
+                    })
+                    .container('.chart-container')
+                    .data(data)
+                    .onNodeClick((d) => {
+                        // Clear previous highlighting
+                        chart.clearHighlighting().collapseAll();
+                        // Highlight the clicked node
+                        chart.setUpToTheRootHighlighted(d.data.id).render().fit();
+                    })
+                    .render();
 
-            // Populate nameSuggestions array
-            data.forEach((item) => {
-                nameSuggestions.push(item.Address);
-            });
-            // Populate suggestions in datalist
-            const dataList = document.getElementById('suggestions');
-            data.forEach((item) => {
-                const option = document.createElement('option');
-                option.value = item.Address;
-                dataList.appendChild(option);
-            });
-            // Bind event listener to input for filtering chart
-            document.getElementById('searchInput').addEventListener('input', filterChart);
+                // Populate nameSuggestions array
+                data.forEach((item) => {
+                    nameSuggestions.push(item.Address);
+                });
+                // Populate suggestions in datalist
+                const dataList = document.getElementById('suggestions');
+                data.forEach((item) => {
+                    const option = document.createElement('option');
+                    option.value = item.Address;
+                    dataList.appendChild(option);
+                });
+                // Bind event listener to input for filtering chart
+                document.getElementById('searchInput').addEventListener('input', filterChart);
 
-            // Automatically expand and center the node with ID '56'
-            expandNode('56');
-        });
-  </script>
+                // Automatically expand and center the node with ID '56'
+                expandNode('56');
+            });
+    </script>
 </body>
 </html>
