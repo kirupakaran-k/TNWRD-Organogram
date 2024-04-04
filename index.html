@@ -72,8 +72,7 @@
     <h1 style="font-size: clamp(18px, 3.6vw, 28px);">TAMILNADU WATER RESOURCES DEPARTMENT - ORGANOGRAM</h1>
     <hr style="border: 1px solid #a3a3c2; margin-top: -1vh; margin-bottom: max(-10px, -2vh);">
     <p style="font-size: clamp(12px, 1.4vw, 14px);"><i><b> Engineered by Er.K.K for TNWRD Engineers</b></i></p>
-    <hr style="border: 1px solid #a3a3c2; margin-top: max(-10px, -2vh); margin-bottom: -1vh;">
-    <h2 style="font-size: clamp(16px, 3vw, 24px);">COIMBATORE REGION</h2>
+    <hr style="border: 1px solid #a3a3c2; margin-top: max(-10px, -2vh); margin-bottom: 1vh;">
     <!-- Input for searching -->
     <input type="search" id="searchInput" list="suggestions" placeholder="Enter here to search" style="display: block; margin: 0 auto;text-align: center;width: 50vw;"/>
     <datalist id="suggestions"></datalist>
@@ -138,7 +137,7 @@
         }
 
         // Load data from CSV
-        d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=412639955&single=true&output=csv')
+        d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSdRqAAC6DtZrVXHHxHA0VH6CUT8xszgO8kkE1IZuZx18SN2-oyNBADM4C2iWkDjIeHDcBHrPQoNExU/pub?gid=0&single=true&output=csv')
             .then((data) => {
                 chart = new d3.OrgChart()
                     .nodeHeight((d) => 110)
@@ -211,7 +210,7 @@
                 document.getElementById('searchInput').addEventListener('input', filterChart);
 
                 // Automatically expand and center the node with ID '56'
-                expandNode('56');
+                expandNode('65');
             });
     </script>
 </body>
