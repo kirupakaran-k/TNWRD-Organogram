@@ -61,6 +61,23 @@
             box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.6);
             border-radius: 10px;
         }
+        /* Added CSS for search bar */
+        .search-container {
+            position: relative;
+            width: 50vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #searchInput {
+            width: calc(100% - 30px); /* Adjust width as needed */
+            padding: 6px;
+            border: 2px solid #a3a3c2; /* Add border */
+            border-radius: 50px; /* Add border radius */
+            font-size: clamp(12px, 1.4vw, 14px);
+            box-sizing: border-box;
+        }
+
     </style>
 </head>
 <body style="display: block; background-image: url('https://raw.githubusercontent.com/kirupakaran-k/test2/main/resource/Aliyar.jpg'); background-position: 55% top; background-repeat: no-repeat; background-size: cover; backdrop-filter: grayscale(100%) brightness(120%); position: relative; height: 100vh;">
@@ -72,10 +89,12 @@
     <h1 style="font-size: clamp(18px, 3.6vw, 28px);">TAMILNADU WATER RESOURCES DEPARTMENT - ORGANOGRAM</h1>
     <hr style="border: 1px solid #a3a3c2; margin-top: -1vh; margin-bottom: max(-10px, -2vh);">
     <p style="font-size: clamp(12px, 1.4vw, 14px);"><i><b> Engineered by Er.K.K for TNWRD Engineers</b></i></p>
-    <hr style="border: 1px solid #a3a3c2; margin-top: max(-10px, -2vh); margin-bottom: 1vh;">
+    <hr style="border: 1px solid #a3a3c2; margin-top: max(-10px, -2vh);">
     <!-- Input for searching -->
-    <input type="search" id="searchInput" list="suggestions" placeholder="Enter here to search" style="display: block; margin: 0 auto;text-align: center;width: 50vw;"/>
-    <datalist id="suggestions"></datalist>
+    <div class="search-container">
+        <input type="search" id="searchInput" list="suggestions" placeholder="Enter here to search"/>
+        <datalist id="suggestions"></datalist>
+    </div>
     <!-- Container for organizational chart -->
     <div class="chart-container"></div>
     <!-- Modal container -->
@@ -120,10 +139,6 @@
             if (matchedNode) {
                 chart.setUpToTheRootHighlighted(matchedNode.id).render().fit();
             }
-        }
-
-        function expandNode(nodeId) {
-            chart.setUpToTheRootHighlighted(nodeId).render().fit();
         }
 
         // Function to open modal
@@ -193,7 +208,7 @@
                         // Highlight the clicked node
                         chart.setUpToTheRootHighlighted(d.data.id).render().fit();
                     })
-                    .render();
+                    .render().fit();
 
                 // Populate nameSuggestions array
                 data.forEach((item) => {
@@ -209,8 +224,6 @@
                 // Bind event listener to input for filtering chart
                 document.getElementById('searchInput').addEventListener('input', filterChart);
 
-                // Automatically expand and center the node with ID '56'
-                expandNode('65');
             });
     </script>
 </body>
